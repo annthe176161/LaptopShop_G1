@@ -1,0 +1,39 @@
+<div class="profile-container">
+  <h2 class="profile-header">User Profile</h2>
+  <div class="profile-item">
+    <span>IsActive:</span> <span id="isActive">True</span>
+  </div>
+  <div class="profile-item">
+    <span>Last Login Date:</span> <span id="lastLoginDate">2024-11-21</span>
+  </div>
+  <div class="profile-item">
+    <span>Name:</span> <span id="name">{{ name }}</span>
+  </div>
+  <div class="profile-item">
+    <span>Email:</span> <span id="email">{{ email }}</span>
+  </div>
+  <div class="profile-item">
+    <span>Phone Number:</span>
+    <span *ngIf="!isEditingPhone">{{ phone }}</span>
+    <div *ngIf="isEditingPhone">
+      <input
+        [(ngModel)]="phone"
+        type="text"
+        placeholder="Enter new phone number"
+      />
+      <p
+        *ngIf="phone && !validatePhoneNumber(phone)"
+        style="color: red; font-size: 14px"
+      >
+        Invalid phone number! Please enter a valid Vietnamese phone number.
+      </p>
+    </div>
+  </div>
+  <button *ngIf="!isEditingPhone" (click)="toggleEditPhone()">
+    Edit Phone
+  </button>
+  <button *ngIf="isEditingPhone" (click)="savePhoneNumber()">Save</button>
+  <div class="profile-item">
+    <span>Username:</span> <span id="username">{{ username }}</span>
+  </div>
+</div>

@@ -1,0 +1,144 @@
+<div class="single-product-area">
+  <div class="container">
+    <div class="product-grid">
+      <!-- Product Image Section -->
+      <div class="product-image-section">
+        <div class="product-image-wrapper">
+          <img
+            [src]="product.imageURL"
+            alt="{{ product.name }}"
+            class="product-image"
+          />
+        </div>
+      </div>
+
+      <!-- Product Information Section -->
+      <div class="product-info-section">
+        <!-- Product Header -->
+        <div class="product-header">
+          <h1 class="product-title">{{ product.name }}</h1>
+          <div class="product-rating">
+            <div class="stars">
+              <i class="star active"></i>
+              <i class="star active"></i>
+              <i class="star active"></i>
+              <i class="star half"></i>
+              <i class="star"></i>
+            </div>
+            <span class="rating-text">(4.5/5)</span>
+          </div>
+        </div>
+
+        <!-- Price and Availability -->
+        <!-- <div class="product-price-section">
+          <span class="price">{{ product.price | currency }}</span>
+          <span
+            class="availability"
+            [ngClass]="{ 'in-stock': product.stockQuantity }"
+          >
+            {{ product.stockQuantity ? "In Stock" : "Out of Stock" }}
+          </span>
+        </div>-->
+
+        <!-- Price and Availability -->
+        <div class="product-price-section">
+            <span class="price">{{ product.price | currency }}</span>
+            <span class="availability">
+                <!-- Hiển thị số lượng trực tiếp -->
+                {{ product.stockQuantity }} items available
+            </span>
+        </div>
+
+
+        <!-- Description -->
+        <p class="product-description">{{ product.description }}</p>
+
+        <form (ngSubmit)="addToCart(cartForm.value)" #cartForm="ngForm">
+          <!-- Actions -->
+          <div class="product-actions">
+            <!-- <div class="quantity-control"> -->
+            <!-- <button class="quantity-btn decrease">-</button> -->
+            <input
+              type="number"
+              id="quantity"
+              name="quantity"
+              ngModel
+              [min]="1"
+              required
+            />
+            <!-- <button class="quantity-btn increase">+</button> -->
+            <!-- </div> -->
+            <input
+              type="text"
+              name="productId"
+              [(ngModel)]="product.productID"
+              hidden
+            />
+
+            <button type="submit" [disabled]="!cartForm.valid">
+              <i class="cart-icon"></i> Add to Cart
+            </button>
+            <!-- <button class="add-to-cart-btn">
+                       
+                    </button> -->
+          </div>
+        </form>
+
+        <!-- Extra Actions -->
+        <div class="product-extra-actions">
+          <button class="wishlist-btn">
+            <i class="heart-icon"></i> Add to Wishlist
+          </button>
+          <button class="compare-btn">
+            <i class="compare-icon"></i> Compare
+          </button>
+        </div>
+
+        <!-- Product Meta -->
+        <!-- <div class="product-meta">
+          <div class="categories">
+            <strong>Categories:</strong>
+            <a href="#">Accessories</a>, <a href="#">Clothings</a>
+          </div>
+        </div> -->
+
+        <!-- Product Meta -->
+        <div class="product-meta">
+            <div class="brands">
+                <strong>Brand:</strong>
+                <a href="#">{{ product.brandName }}</a>
+            </div>
+        </div>
+
+        <!-- Sharing -->
+        <div class="single-product-sharing">
+          <div class="widget widget_socialsharing_widget">
+            <h3 class="widget-title">Share this product</h3>
+            <ul class="social-icons">
+              <li>
+                <a class="facebook social-icon" href="#"
+                  ><i class="fa fa-facebook"></i
+                ></a>
+              </li>
+              <li>
+                <a class="twitter social-icon" href="#"
+                  ><i class="fa fa-twitter"></i
+                ></a>
+              </li>
+              <li>
+                <a class="pinterest social-icon" href="#"
+                  ><i class="fa fa-pinterest"></i
+                ></a>
+              </li>
+              <li>
+                <a class="linkedin social-icon" href="#"
+                  ><i class="fa fa-linkedin"></i
+                ></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

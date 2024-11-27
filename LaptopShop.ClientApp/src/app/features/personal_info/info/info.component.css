@@ -1,0 +1,18 @@
+.orders-container {
+    margin: 20px;
+    font-family: Arial, sans-serif;
+}
+
+h2 {
+    color: #007bff;
+}
+
+.table th,
+.table td {
+    vertical-align: middle;
+}
+
+.loading .spinner-border {
+    width: 3rem;
+    height: 3rem;
+}

@@ -1,0 +1,80 @@
+<div class="container-fluid mt-4">
+  <!-- Thanh công cụ tìm kiếm và bộ lọc -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="input-group w-50">
+      <input type="text" class="form-control" placeholder="Search by name" [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearch($event)" />
+    </div>
+    <div class="ms-2">
+      <select class="form-select" [(ngModel)]="inactivePeriod" (change)="onFilterInactive()">
+        <option value="-1">All Users</option>
+        <option value="7">Inactive for 1 week</option>
+        <option value="30">Inactive for 1 month</option>
+        <option value="90">Inactive for 1 quarter</option>
+      </select>
+    </div>
+    <button class="btn btn-success ms-2" (click)="exportUserList()">Export Users to Excel</button>
+  </div>
+
+  <!-- Bảng hiển thị danh sách người dùng -->
+  <div *ngIf="customers && customers.length > 0" class="table-responsive">
+    <table class="table table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th>STT</th>
+          <th>User Name</th>
+          <th>Email</th>
+          <th>Status</th>
+          <th>Last Login Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let customer of customers; let i = index">
+          <td>{{ i + 1 + (page - 1) * pageSize }}</td>
+          <td>{{ customer.userName }}</td>
+          <td>{{ customer.email }}</td>
+          <td>
+            <span class="badge" [ngClass]="customer.isActive ? 'bg-success' : 'bg-danger'">
+              {{ customer.isActive ? 'Active' : 'Inactive' }}
+            </span>
+          </td>
+          <td>{{ customer.lastLoginDate | date: 'short' }}</td>
+          <td>
+            <button class="btn btn-sm" [ngClass]="customer.isActive ? 'btn-danger' : 'btn-primary'"
+              (click)="toggleAccess(customer.id, customer.isActive)">
+              {{ customer.isActive ? 'Disable Access' : 'Enable Access' }}
+            </button>
+            <button class="btn btn-sm btn-warning" (click)="inviteUser(customer.id)">
+              Invite User
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Hiển thị thông báo khi không có người dùng -->
+  <div *ngIf="customers.length === 0 && !isLoading" class="alert alert-warning text-center">
+    No customers found.
+  </div>
+
+  <!-- Hiển thị trạng thái đang tải -->
+  <div *ngIf="isLoading" class="text-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Phân trang -->
+  <div class="d-flex justify-content-center align-items-center mt-3">
+    <button class="btn btn-outline-primary me-2" (click)="onPageChange(page - 1)" [disabled]="page <= 1">
+      Previous
+    </button>
+    <span>Page {{ page }}</span>
+    <button class="btn btn-outline-primary ms-2" (click)="onPageChange(page + 1)"
+      [disabled]="customers.length < pageSize">
+      Next
+    </button>
+  </div>
+</div>

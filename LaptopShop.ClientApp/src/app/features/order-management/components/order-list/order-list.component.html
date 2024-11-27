@@ -1,0 +1,156 @@
+<!-- order-list.component.html -->
+<div class="container-fluid px-4">
+  <div class="row mb-3 align-items-center">
+    <div class="col-12">
+      <h2 class="page-title">Order Management</h2>
+    </div>
+  </div>
+
+  <!-- Search and Filter Toolbar -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <div class="row g-3 align-items-center">
+        <!-- Search Input -->
+        <div class="col-md-4">
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="bi bi-search"></i>
+            </span>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Search by customer name"
+              [(ngModel)]="searchTerm"
+              (keyup.enter)="onSearch()"
+            />
+            <button class="btn btn-primary" (click)="onSearch()">Search</button>
+          </div>
+        </div>
+
+        <!-- Status Filter -->
+        <div class="col-md-3">
+          <select
+            class="form-select"
+            [(ngModel)]="statusFilter"
+            (change)="onFilterChange()"
+          >
+            <option value="">All Statuses</option>
+            <option value="Pending">Pending</option>
+            <option value="Confirmed">Confirmed</option>
+            <option value="Rejected">Rejected</option>
+            <option value="Shipped">Shipped</option>
+            <option value="Completed">Completed</option>
+            <option value="Canceled">Canceled</option>
+          </select>
+        </div>
+
+        <!-- Page Size -->
+        <div class="col-md-3">
+          <div class="input-group">
+            <span class="input-group-text">Show</span>
+            <select
+              class="form-select"
+              [(ngModel)]="pageSize"
+              (change)="onPageSizeChange()"
+            >
+              <option *ngFor="let size of pageSizeOptions" [value]="size">
+                {{ size }}
+              </option>
+            </select>
+            <span class="input-group-text">entries</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Orders Table -->
+  <div class="card">
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+        <thead class="table-light">
+          <tr>
+            <th>No</th>
+            <th>Customer Name</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Total Amount</th>
+            <th>Notes</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of orders; let i = index">
+            <td>{{ calculateIndex(i) }}</td>
+            <td>{{ order.customerName }}</td>
+            <td>{{ order.orderDate | date : "mediumDate" }}</td>
+            <td>
+              <span
+                class="badge"
+                [ngClass]="{
+                  'badge-warning': order.orderStatus === 'Pending',
+                  'badge-info': order.orderStatus === 'Confirmed',
+                  'badge-primary': order.orderStatus === 'Shipped',
+                  'badge-success': order.orderStatus === 'Completed',
+                  'badge-danger': order.orderStatus === 'Cancelled',
+                  'badge-secondary': order.orderStatus === 'Rejected'
+                }"
+              >
+                {{ order.orderStatus }}
+              </span>
+            </td>
+            <td>{{ order.totalAmount | currency }}</td>
+            <td>{{ order.notes }}</td>
+            <td>
+              <button *ngIf="order.orderStatus !== 'Canceled'" class="btn btn-sm btn-info"
+                [routerLink]="['/orders', order.orderID]">
+                <i class="bi bi-eye"></i> View
+              </button>
+              <span *ngIf="order.orderStatus === 'Canceled'" class="text-danger">
+                The customer has canceled the order.
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="card-footer d-flex justify-content-between align-items-center">
+      <div class="pagination-info">
+        Showing {{ (pageNumber - 1) * pageSize + 1 }} to
+        {{
+          pageNumber * pageSize < orders.length
+            ? pageNumber * pageSize
+            : orders.length
+        }}
+        of {{ orders.length }} entries
+      </div>
+      <nav aria-label="Order list navigation">
+        <ul class="pagination mb-0">
+          <li class="page-item" [class.disabled]="pageNumber === 1">
+            <button
+              class="page-link"
+              (click)="onPageChange(pageNumber - 1)"
+              [disabled]="pageNumber === 1"
+            >
+              Previous
+            </button>
+          </li>
+          <li class="page-item active">
+            <span class="page-link">{{ pageNumber }}</span>
+          </li>
+          <li class="page-item" [class.disabled]="orders.length < pageSize">
+            <button
+              class="page-link"
+              (click)="onPageChange(pageNumber + 1)"
+              [disabled]="orders.length < pageSize"
+            >
+              Next
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>

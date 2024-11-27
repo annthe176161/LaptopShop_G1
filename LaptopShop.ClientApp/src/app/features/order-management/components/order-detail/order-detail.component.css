@@ -1,0 +1,17 @@
+/* order-detail.component.css */
+
+/* Optional: Customize card headers */
+.card-header {
+  background-color: #f8f9fa;
+}
+
+/* Optional: Add transition effects to badges */
+.badge {
+  transition: background-color 0.3s ease;
+}
+
+/* Optional: Hover effects for table rows */
+.table tbody tr:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
+}

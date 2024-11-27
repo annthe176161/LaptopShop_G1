@@ -1,0 +1,236 @@
+<div class="breadcrumbs-container">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <nav class="woocommerce-breadcrumb">
+          <a href="index.html">Home</a>
+          <span class="separator">/</span> Cart
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Breadcrumbs End -->
+<!-- Page title -->
+<div class="entry-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <h1 class="entry-title">Cart</h1>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Page title end -->
+<!-- cart page content -->
+<div class="cart-page-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <!-- Form Start -->
+        <form (ngSubmit)="submitForm()" #form="ngForm">
+          <!-- Table Content Start -->
+          <div class="table-content table-responsive mb-50">
+            <table>
+              <thead>
+                <tr>
+                  <th class="product-thumbnail">Image</th>
+                  <th class="product-name">Product</th>
+                  <th class="product-price">Price</th>
+                  <th class="product-quantity">Quantity</th>
+                  <th class="product-subtotal">Total</th>
+                  <th class="product-remove">Remove</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of items">
+                  <td>
+                    <a style="color: black">
+                      <span style="display: none">{{ item.imageURL }}</span>
+                      <img
+                        src="{{ item.imageURL }}"
+                        alt="cart-image"
+                        style="width: 100px; height: auto"
+                      />
+                    </a>
+                  </td>
+                  <td>{{ item.productName }}</td>
+                  <td>
+                    <span class="amount">{{ item.productPrice }}</span>
+                  </td>
+                  <td>
+                    <span
+                      (click)="updateQuantity(item.productID, -1)"
+                      style="
+                        font-size: 40px;
+                        font-weight: bold;
+                        margin-top: 20px;
+                      "
+                    >
+                      -
+                    </span>
+                    <span class="ms-3 me-3" style="font-size: 24px">{{
+                      item.quantity
+                    }}</span>
+                    <span
+                      (click)="updateQuantity(item.productID, 1)"
+                      style="font-size: 30px; font-weight: bold"
+                    >
+                      +
+                    </span>
+                  </td>
+                  <td>{{ item.quantity * item.productPrice }}</td>
+                  <td>
+                    <a (click)="removeItem(item.productID)"
+                      ><i class="fa fa-times" aria-hidden="true"></i
+                    ></a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Table Content Start -->
+          <div class="row">
+            <!-- Cart Button Start -->
+            <div class="col-md-8 col-sm-7 col-xs-12">
+              <!-- Shipping Address -->
+              <!-- <div class="form-group">
+                <label for="shippingAddress">Shipping Address</label>
+                <input
+                  type="text"
+                  id="shippingAddress"
+                  name="shippingAddress"
+                  class="form-control"
+                  [(ngModel)]="shippingAddress"
+                  required
+                  placeholder="Enter your shipping address"
+                />
+              </div> -->
+
+              <div class="form-group">
+                <label for="shippingAddress">Shipping Address</label>
+                <input
+                  type="text"
+                  id="shippingAddress"
+                  name="shippingAddress"
+                  class="form-control"
+                  [(ngModel)]="shippingAddress"
+                  required
+                  placeholder="E.g., 123 Nguyen Van A, District 1, HCMC."
+                />
+                <small class="text-danger">
+                  E.g., 123 Nguyen Van A, District 1, HCMC.
+                </small>
+              </div>
+
+              <!-- Payment Method -->
+              <div class="form-group">
+                <label for="paymentMethod">Payment Method</label>
+                <select
+                  id="paymentMethod"
+                  name="paymentMethod"
+                  class="form-control"
+                  [(ngModel)]="paymentMethod"
+                  required
+                >
+                  <option value="" disabled selected>
+                    Select payment method
+                  </option>
+                  <!-- <option value="creditCard">Credit Card</option>
+                                    <option value="paypal">PayPal</option> -->
+                  <option value="cashOnDelivery" selected>
+                    Cash on Delivery
+                  </option>
+                </select>
+              </div>
+
+              <!-- Shipping Method -->
+              <div class="form-group">
+                <label for="shippingMethod">Shipping Method</label>
+                <select
+                  id="shippingMethod"
+                  name="shippingMethod"
+                  class="form-control"
+                  [(ngModel)]="shippingMethod"
+                  required
+                >
+                  <option value="" disabled selected>
+                    Select shipping method
+                  </option>
+                  <option value="standard">Standard Shipping</option>
+                  <option value="express">Express Shipping</option>
+                  <option value="pickup">Store Pickup</option>
+                </select>
+              </div>
+
+              <!-- Notes -->
+              <!-- <div class="form-group">
+                <label for="notes">Notes</label>
+                <textarea
+                  id="notes"
+                  name="notes"
+                  class="form-control"
+                  [(ngModel)]="notes"
+                  rows="4"
+                  placeholder="Add any notes for your order"
+                ></textarea>
+              </div> -->
+
+              <div class="form-group">
+                <label for="notes">Notes</label>
+                <textarea
+                  id="notes"
+                  name="notes"
+                  class="form-control"
+                  [(ngModel)]="notes"
+                  rows="4"
+                  placeholder="E.g., Preferred delivery time: 9 AM - 5 PM, or any additional instructions"
+                ></textarea>
+                <small class="text-muted">
+                  * Optional: Specify preferred delivery time or other
+                  additional instructions. <br />
+                  *
+                  <span style="font-weight: bold; color: darkgreen"
+                    >If you want to update your phone number, you can include it
+                    in this field.</span
+                  >
+                  <br />
+                  E.g., Preferred delivery time: 9 AM - 5 PM, or any additional
+                  instructions.
+                </small>
+              </div>
+            </div>
+            <!-- Cart Button Start -->
+            <!-- Cart Totals Start -->
+            <div class="col-md-4 col-sm-5 col-xs-12">
+              <div class="cart_totals">
+                <h2>Cart Totals</h2>
+                <br />
+                <table>
+                  <tbody>
+                    <tr class="order-total">
+                      <th>Total</th>
+                      <td>
+                        <strong
+                          ><span class="amount">${{ totalPrice }}</span></strong
+                        >
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="wc-proceed-to-checkout">
+                  <button type="submit" class="btn btn-primary">
+                    Proceed to Checkout
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- Cart Totals End -->
+          </div>
+          <!-- Row End -->
+        </form>
+        <!-- Form End -->
+      </div>
+    </div>
+  </div>
+</div>

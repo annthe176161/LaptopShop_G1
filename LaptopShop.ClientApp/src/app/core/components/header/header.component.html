@@ -1,0 +1,157 @@
+<!-- HEADER AREA START -->
+<header class="header-area">
+  <!-- Header top area start -->
+  <div class="header-top-area">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 col-sm-6">
+          <div class="top-bar-left">
+            <!-- welcome -->
+            <div class="welcome">
+              <p>Find the Perfect Laptop for Work, Study, and Gaming</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-8 col-sm-6">
+          <div class="topbar-nav">
+            <div class="wpb_wrapper">
+              <!-- my account -->
+              <div class="menu-my-account-container">
+                <a href="#">My Account <i class="ion-ios-arrow-down"></i></a>
+                <ul>
+                  <li *ngIf="loggined">
+                    <a href="/user-profile">My Order</a>
+                  </li>
+                  <li *ngIf="loggined && isAdmin">
+                    <a href="/user-management">Manage Users</a>
+                  </li>
+                  <li *ngIf="loggined && isAdmin">
+                    <a href="/orders">Manage Orders</a>
+                  </li>
+                  <li *ngIf="loggined"><a href="/profile">Profile</a></li>
+                  <li *ngIf="loggined && isAdmin">
+                    <a href="/dashboard">Dashboard</a>
+                  </li>
+                  <li *ngIf="loggined"><a href="/logout">Logout</a></li>
+                  <li *ngIf="!loggined"><a href="/login">Login</a></li>
+                  <li *ngIf="!loggined"><a href="/register">Register</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Top bar area end -->
+  <!-- Header middle area start -->
+  <div class="header-middle-area">
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-2 col-md-12">
+          <!-- site-logo -->
+          <div class="site-logo">
+            <a href="/"
+              ><img src="/assets/images/logo/logo-white.png" alt="LaptopStore"
+            /></a>
+          </div>
+        </div>
+        <div class="col-xl-6 col-md-12">
+          <!-- header-search -->
+          <div class="header-search clearfix">
+            <div class="category-select pull-right">
+              <select class="nice-select-menu">
+                <option data-display="All Categories">All Categories</option>
+                <option value="1">Decor & Furniture</option>
+                <option value="2">Electronics</option>
+                <option value="3">Fashion & clothings</option>
+                <option value="4" disabled>Sport & Outdoors</option>
+                <option value="5">Toy, Kids & Baby</option>
+              </select>
+            </div>
+            <div class="header-search-form">
+              <form action="#">
+                <input
+                  type="text"
+                  name="search"
+                  placeholder="Search product..."
+                />
+                <input type="submit" name="submit" value="Search" />
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-4 col-md-12">
+          <!-- shop-cart-menu -->
+          <div class="shop-cart-menu pull-right">
+            <ul>
+              <li>
+                <a href="#"><i class="ion-ios-shuffle-strong"></i></a>
+              </li>
+              <li>
+                <a href="wishlist.html"
+                  ><i class="ion-android-favorite-outline"></i
+                ></a>
+              </li>
+              <li>
+                <a href="/cart">
+                  <span class="cart-icon">
+                    <i class="ion-bag"></i><sup>{{ totalQuantity }}</sup>
+                  </span>
+                  <span class="cart-text">
+                    <span class="cart-text-title"
+                      >My cart <br />
+                      <strong>$ {{ totalPrice }}</strong>
+                    </span>
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Header middle area end -->
+  <!-- Header bottom area start -->
+  <div class="header-bottom-area">
+    <div class="container">
+      <div class="row">
+        <div
+          class="col-xl-3 col-lg-3 hidden-md hidden-sm pull-left category-wrapper"
+        ></div>
+        <div class="col-lg-9">
+          <!-- main-menu -->
+          <div class="main-menu">
+            <nav>
+              <ul>
+                <li class="current"><a href="/">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="about-us.html">About Us</a></li>
+                <li><a href="contact-us.html">Contact</a></li>
+                <li><a href="#">Features</a></li>
+              </ul>
+            </nav>
+          </div>
+          <div class="mobile-menu-area">
+            <div class="mobile-menu">
+              <nav id="mobile-menu-active">
+                <ul class="menu-overflow">
+                  <li><a href="#">HOME</a></li>
+                  <li><a href="shop.html">Shop</a></li>
+                  <li><a href="blog.html">Blog</a></li>
+                  <li><a href="about-us.html">About Us</a></li>
+                  <li><a href="contact-us.html">Contact</a></li>
+                  <li><a href="#">Features</a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Header bottom area end -->
+</header>
+<!-- HRADER AREA END -->

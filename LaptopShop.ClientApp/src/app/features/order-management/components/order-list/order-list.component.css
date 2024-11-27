@@ -1,0 +1,109 @@
+/* order-list.component.css */
+/* Import Bootstrap and Bootstrap Icons */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
+/* Page title */
+.page-title {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+/* Table enhancements */
+.table {
+  /* Subtle hover effect */
+  tbody tr {
+    transition: background-color 0.2s ease;
+  }
+
+  tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.05) !important;
+  }
+}
+
+/* Badge styles */
+.badge {
+  font-size: 0.8em;
+  padding: 0.4em 0.6em;
+}
+
+.badge-warning { 
+  background-color: #ffc107 !important; 
+  color: #212529 !important;
+}
+
+.badge-info { 
+  background-color: #17a2b8 !important; 
+}
+
+.badge-success { 
+  background-color: #28a745 !important; 
+}
+
+.badge-danger { 
+  background-color: #dc3545 !important; 
+}
+
+.badge-secondary { 
+  background-color: #6c757d !important; 
+}
+
+.badge-primary {
+  background-color: #007bff !important;
+}
+
+/* Action buttons */
+.btn-sm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-sm i {
+  margin-right: 0.25rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .table-responsive {
+    overflow-x: auto;
+  }
+  
+  .pagination {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .pagination .pagination-info {
+    margin-bottom: 10px;
+    text-align: center;
+  }
+}
+
+/* Input group and select enhancements */
+.input-group .form-control:focus,
+.input-group .form-select:focus {
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Pagination improvements */
+.pagination .page-item.active .page-link {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.pagination .page-item .page-link {
+  color: #007bff;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+}
+
+.pagination .page-item .page-link:hover {
+  background-color: #e9ecef;
+}
+
+.pagination .page-item .page-link:focus {
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}

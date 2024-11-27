@@ -1,0 +1,101 @@
+<div class="container">
+
+  <div class="main-content">
+
+    <!-- Filter Sidebar -->
+    <aside class="filters">
+      <!-- Filter by Brand -->
+      <div class="filter-section">
+        <h3>Brands</h3>
+        <div class="brand-filters">
+          <!-- Tùy chọn All Brands -->
+          <div class="filter-item">
+            <input type="checkbox" id="all-brands" [checked]="selectedBrand === null" (change)="filterByBrand(null)" />
+            <label for="all-brands">All Brands</label>
+          </div>
+
+          <!-- Các thương hiệu -->
+          <div class="filter-item" *ngFor="let brand of brands">
+            <input type="checkbox" [id]="'brand' + brand.brandID" [checked]="selectedBrand === brand.brandID"
+              (change)="filterByBrand(brand.brandID)" />
+            <label [for]="'brand' + brand.brandID">{{ brand.brandName }}</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter by Price Range -->
+      <div class="filter-section">
+        <h3>Price Range</h3>
+        <div class="price-filters">
+          <!-- Tùy chọn All Prices -->
+          <div class="filter-item">
+            <input type="radio" name="price" id="all-prices" [checked]="selectedPriceRange === null"
+              (change)="filterByPriceRange(null, null)" />
+            <label for="all-prices">All Prices</label>
+          </div>
+
+          <!-- Các khoảng giá -->
+          <div class="filter-item">
+            <input type="radio" name="price" id="price1"
+              [checked]="selectedPriceRange?.min === 0 && selectedPriceRange?.max === 50"
+              (change)="filterByPriceRange(0, 50)" />
+            <label for="price1">Under $50</label>
+          </div>
+          <div class="filter-item">
+            <input type="radio" name="price" id="price2"
+              [checked]="selectedPriceRange?.min === 50 && selectedPriceRange?.max === 100"
+              (change)="filterByPriceRange(50, 100)" />
+            <label for="price2">$50 - $100</label>
+          </div>
+          <div class="filter-item">
+            <input type="radio" name="price" id="price3"
+              [checked]="selectedPriceRange?.min === 100 && selectedPriceRange?.max === 9999"
+              (change)="filterByPriceRange(100, 9999)" />
+            <label for="price3">Over $100</label>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Products Container -->
+    <div class="products-container">
+      <!-- Products Grid -->
+      <div class="products-grid">
+        <article class="product-card" *ngFor="let product of paginatedProducts">
+          <div class="product-image">
+            <img [src]="product.imageURL" alt="Product Image" width="100" height="100" />
+          </div>
+          <div class="product-info">
+            <h3 class="product-name">{{ product.name }}</h3>
+            <p class="product-brand">{{ product.brandName }}</p>
+            <p class="product-price">{{ product.price | currency }}</p>
+         
+            <button class="detail-btn" [routerLink]="['/product-detail', product.productID]">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" class="icon">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+              </svg>
+              <span>View Details</span>
+            </button>
+          </div>
+        </article>
+      </div>
+      <!-- Pagination Controls -->
+      <nav class="pagination" *ngIf="filteredProducts.length > 0">
+        <ul class="pagination-list">
+          <li class="pagination-item" [class.disabled]="productCurrentPage === 1">
+            <button (click)="changePage(productCurrentPage - 1)">Previous</button>
+          </li>
+          <li class="pagination-item" *ngFor="let page of getPages()" [class.active]="page === productCurrentPage">
+            <button (click)="changePage(page)">{{ page }}</button>
+          </li>
+          <li class="pagination-item" [class.disabled]="productCurrentPage === totalProductPages()">
+            <button (click)="changePage(productCurrentPage + 1)">Next</button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>

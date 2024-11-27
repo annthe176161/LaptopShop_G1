@@ -1,0 +1,119 @@
+<div class="container mt-5">
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Order Information -->
+  <div *ngIf="order" class="card mb-4">
+    <div class="card-header">
+      <h3>Order Details</h3>
+    </div>
+    <div class="card-body">
+      <div class="row mb-2">
+        <div class="col-md-3"><strong>Customer Name:</strong></div>
+        <div class="col-md-9">{{ order.customerName }}</div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-md-3"><strong>Order Date:</strong></div>
+        <div class="col-md-9">{{ order.orderDate | date : "medium" }}</div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-md-3"><strong>Phone Number:</strong></div>
+        <div class="col-md-9">{{ order.phoneNumber }}</div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-md-3"><strong>Address:</strong></div>
+        <div class="col-md-9">{{ order.shippingAddress }}</div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-md-3"><strong>Method:</strong></div>
+        <div class="col-md-9">{{ order.paymentMethod }}</div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-md-3"><strong>Status:</strong></div>
+        <div class="col-md-9">
+          <span class="badge" [ngClass]="getStatusBadge(order.orderStatus)">
+            {{ order.orderStatus }}
+          </span>
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-md-3"><strong>Notes:</strong></div>
+        <div class="col-md-9">{{ order.notes }}</div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-md-3"><strong>Total Amount:</strong></div>
+        <div class="col-md-9">{{ order.totalAmount | currency }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Update Status Section -->
+  <div *ngIf="order" class="card mb-4">
+    <div class="card-header">
+      <h4>Update Order Status</h4>
+    </div>
+    <div class="card-body">
+      <form (ngSubmit)="updateOrderStatus()">
+        <div class="mb-3">
+          <label for="statusSelect" class="form-label">New Status:</label>
+          <select
+            id="statusSelect"
+            class="form-select"
+            [(ngModel)]="newStatus"
+            name="status"
+            required
+          >
+            <option value="" disabled selected>Select Status</option>
+            <option *ngFor="let status of statuses" [value]="status">
+              {{ status }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Rejection Reason -->
+        <div *ngIf="newStatus === 'Rejected'" class="mb-3">
+          <label for="reason" class="form-label">Reason for Rejection:</label>
+          <textarea
+            id="reason"
+            class="form-control"
+            [(ngModel)]="rejectionReason"
+            name="reason"
+            rows="3"
+            required
+          ></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update Status</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Products Table -->
+  <div *ngIf="order" class="card">
+    <div class="card-header">
+      <h4>Products</h4>
+    </div>
+    <div class="card-body">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Product</th>
+            <th scope="col">Price</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of order.orderDetails">
+            <td>{{ item.productName }}</td>
+            <td>{{ item.productPrice | currency }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.subtotal | currency }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

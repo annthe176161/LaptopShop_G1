@@ -1,0 +1,254 @@
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 sidebar bg-light">
+            <div class="px-3 py-4">
+                <h2 class="text-xl font-bold mb-6 ps-3">Admin Panel</h2>
+                <div class="list-group">
+                    <a class="list-group-item" [class.active]="selectedTab === 'brands'" (click)="showBrands()">
+                        <i class="fas fa-tags"></i>
+                        <span>Brands</span>
+                    </a>
+                    <a class="list-group-item" [class.active]="selectedTab === 'products'" (click)="showProducts()">
+                        <i class="fas fa-box"></i>
+                        <span>Products</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9 col-lg-10 main-content">
+            <!-- Brands Table Section -->
+            <div *ngIf="showBrandsTable" class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0 font-bold">Brands List</h5>
+                        <button type="button" class="btn btn-primary" (click)="isBrandModalVisible = true">
+                            <i class="fas fa-plus me-1"></i> Add Brand
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Success Notifications -->
+                <div *ngIf="isSuccess" class="alert alert-success mt-2">Brand added successfully!</div>
+                <div *ngIf="isUpdateSuccess" class="alert alert-info mt-2">Brand updated successfully!</div>
+                <div *ngIf="isDeleteSuccess" class="alert alert-danger mt-2">Brand deleted successfully!</div>
+
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Brand Name</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let brand of paginatedBrands; let i = index">
+                                    <td>{{ (brandCurrentPage - 1) * brandItemsPerPage + i + 1 }}</td>
+                                    <td>{{ brand.brandName }}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info me-1" title="Edit"
+                                            (click)="editBrand(brand)">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" title="Delete"
+                                            (click)="deleteBrand(brand.brandID)">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                    <!-- Số trang -->
+                    <div>
+                        <span>Page {{ brandCurrentPage }} of {{ totalBrandPages() }}</span>
+                    </div>
+                    <!-- Điều hướng phân trang -->
+                    <nav>
+                        <ul class="pagination mb-0">
+                            <li class="page-item" [class.disabled]="brandCurrentPage === 1">
+                                <button class="page-link" (click)="changePage(brandCurrentPage - 1, 'brands')">&laquo;
+                                    Prev</button>
+                            </li>
+                            <li class="page-item" *ngFor="let page of getPages('brands')"
+                                [class.active]="page === brandCurrentPage">
+                                <button class="page-link" (click)="changePage(page, 'brands')">{{ page }}</button>
+                            </li>
+                            <li class="page-item" [class.disabled]="brandCurrentPage === totalBrandPages()">
+                                <button class="page-link" (click)="changePage(brandCurrentPage + 1, 'brands')">Next
+                                    &raquo;</button>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Products Table Section -->
+            <div *ngIf="showProductsTable" class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0 font-bold">Products List</h5>
+                        <button type="button" class="btn btn-primary" (click)="isProductModalVisible = true">
+                            <i class="fas fa-plus me-1"></i> Add Product
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Brand</th>
+                                    <th>Price</th>
+                                    <th>Description</th>
+                                    <th>Stock Quantity</th>
+                                    <th>Image</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let product of paginatedProducts; let i = index">
+                                    <td>{{ (productCurrentPage - 1) * productItemsPerPage + i + 1 }}</td>
+                                    <td>{{ product.name }}</td>
+                                    <td>{{ product.brandName }}</td>
+                                    <td>{{ product.price | currency }}</td>
+                                    <td>{{ product.description }}</td>
+                                    <td>{{ product.stockQuantity }}</td>
+                                    <td>
+                                        <img [src]="product.imageURL" alt="Product Image" width="100" height="100">
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info me-1" title="Edit"
+                                            (click)="editProduct(product)">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" title="Delete"
+                                            (click)="deleteProduct(product.productID)">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer d-flex justify-content-between align-items-center">
+                        <!-- Số trang -->
+                        <div>
+                            <span>Page {{ productCurrentPage }} of {{ totalProductPages() }}</span>
+                        </div>
+                        <!-- Điều hướng phân trang -->
+                        <nav>
+                            <ul class="pagination mb-0">
+                                <li class="page-item" [class.disabled]="productCurrentPage === 1">
+                                    <button class="page-link"
+                                        (click)="changePage(productCurrentPage - 1, 'products')">&laquo; Prev</button>
+                                </li>
+                                <li class="page-item" *ngFor="let page of getPages('products')"
+                                    [class.active]="page === productCurrentPage">
+                                    <button class="page-link" (click)="changePage(page, 'products')">{{ page }}</button>
+                                </li>
+                                <li class="page-item" [class.disabled]="productCurrentPage === totalProductPages()">
+                                    <button class="page-link"
+                                        (click)="changePage(productCurrentPage + 1, 'products')">Next &raquo;</button>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal for Add/Edit Brand -->
+            <div class="modal" [class.show]="isBrandModalVisible" tabindex="-1" style="display: block;"
+                *ngIf="isBrandModalVisible">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">{{ newBrand.brandID === 0 ? 'Add Brand' : 'Edit Brand' }}</h5>
+                            <button type="button" class="btn-close" (click)="isBrandModalVisible = false"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="brandName">Brand Name</label>
+                                <input type="text" id="brandName" class="form-control" [(ngModel)]="newBrand.brandName"
+                                    placeholder="Enter brand name" />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary"
+                                (click)="isBrandModalVisible = false">Cancel</button>
+                            <button type="button" class="btn btn-primary" (click)="saveBrand()">
+                                {{ newBrand.brandID === 0 ? 'Add' : 'Update' }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal for Add/Edit Product -->
+            <div class="modal" [class.show]="isProductModalVisible" tabindex="-1" style="display: block;"
+                *ngIf="isProductModalVisible">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">{{ selectedProduct.productID === 0 ? 'Add Product' : 'Edit Product'
+                                }}</h5>
+                            <button type="button" class="btn-close" (click)="isProductModalVisible = false"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="productName">Product Name</label>
+                                <input type="text" id="productName" class="form-control"
+                                    [(ngModel)]="selectedProduct.name" placeholder="Enter product name" />
+
+                                <label for="productPrice">Price</label>
+                                <input type="number" id="productPrice" class="form-control"
+                                    [(ngModel)]="selectedProduct.price" placeholder="Enter price" />
+
+                                <label for="productStock">Stock Quantity</label>
+                                <input type="number" id="productStock" class="form-control"
+                                    [(ngModel)]="selectedProduct.stockQuantity" placeholder="Enter stock quantity" />
+
+                                <label for="productDescription">Description</label>
+                                <textarea id="productDescription" class="form-control"
+                                    [(ngModel)]="selectedProduct.description"
+                                    placeholder="Enter description"></textarea>
+
+                                <label for="productImage">Image URL</label>
+                                <input type="text" id="productImage" class="form-control"
+                                    [(ngModel)]="selectedProduct.imageURL" placeholder="Enter image URL" />
+
+                                <label for="productBrand">Brand</label>
+                                <select id="productBrand" class="form-control" [(ngModel)]="selectedProduct.brandID">
+                                    <option *ngFor="let brand of brands" [value]="brand.brandID">
+                                        {{ brand.brandName }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary"
+                                (click)="isProductModalVisible = false">Cancel</button>
+                            <button type="button" class="btn btn-primary" (click)="saveProduct()">
+                                {{ selectedProduct.productID === 0 ? 'Add' : 'Update' }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Default Message -->
+            <div *ngIf="!showBrandsTable && !showProductsTable" class="text-center mt-5">
+                <p class="text-muted">Select a section from the sidebar to view details.</p>
+            </div>
+        </div>
+    </div>
+</div>
